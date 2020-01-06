@@ -9,7 +9,7 @@ brook管理WEB面板：
 ## 一键安装
 
 ``` bash
-bash -c "curl -fsSL https://raw.githubusercontent.com/inu1255/brookpanel/master/install.sh"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/inu1255/brookpanel/master/install.sh)"
 ```
 
 ## 手动安装
