@@ -1,9 +1,11 @@
 <template>
 	<v-container class="pages-ssrs">
-		<v-data-table class="elevation-1" :items="data.list" :headers="headers" :loading="data.loading" hide-default-footer disable-pagination>
+		<v-data-table v-if="show" class="elevation-1" :items="data.list" :headers="headers" :loading="data.loading" hide-default-footer disable-pagination>
 			<template v-slot:top>
 				<v-toolbar flat color="white">
 					<v-toolbar-title>{{data.total}}个用户</v-toolbar-title>
+					<a class="ml-4" href="/布谷鸟.app.zip" target="_blank">Mac端</a>
+					<a class="ml-4" href="/布谷鸟.exe.zip" target="_blank">Windows端</a>
 					<v-spacer></v-spacer>
 					<v-btn @click="edit()" color="success" class="ml-2">添加</v-btn>
 					<v-btn @click="data.search()" color="primary" class="ml-2">刷新</v-btn>
@@ -44,7 +46,7 @@
 				<v-text-field label="备注" v-model="body.mark"></v-text-field>
 				<v-select label="模式" :items="modes" :value="body.domain&&body.domain[0]" @change="body.domain=$event"></v-select>
 				<!-- <v-text-field v-show="body.domain[0]=='w'" label="域名(不填则仅开启http)" :value="body.domain.slice(1)" @change="body.domain='w'+$event"></v-text-field> -->
-				<v-flex v-show="body.domain.length<2" align-end>
+				<v-flex v-show="!body.domain||body.domain.length<2" align-end>
 					<v-text-field label="端口" v-model="body.port" type="number"></v-text-field>
 					<v-btn text tile @click="body.port=$utils.randN(1e4)+1e4">随机</v-btn>
 				</v-flex>
@@ -94,7 +96,8 @@ export default {
 			}, {
 				text: 'WSServer',
 				value: 'w',
-			},]
+			},],
+			show: false,
 		}
 	},
 	computed: {
@@ -148,6 +151,7 @@ export default {
 				port: utils.randN(1e4) + 2e4,
 				passwd: utils.randomString(6),
 				token: utils.randomString(32),
+				domain: '',
 				u: 0,
 				d: 0,
 				limit: 2048 * 1024 * 1024,
@@ -184,9 +188,13 @@ export default {
 		query(body) {
 			return this.$get('users/list', body)
 		},
+		async refresh() {
+			await this.data.search(0)
+			this.show = true
+		},
 	},
 	mounted() {
-		this.data.search(0)
+		this.refresh()
 	}
 }
 </script>

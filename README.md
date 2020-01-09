@@ -11,6 +11,7 @@ brook管理WEB面板：
 ``` bash
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/inu1255/brookpanel/master/install.sh)"
 ```
+**注意如果你的服务器设置了防火墙可能导致无法访问**
 
 ## 手动安装
 

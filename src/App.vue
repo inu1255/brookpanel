@@ -3,7 +3,7 @@
 		<v-app-bar v-if="!meta.full" app flat absolute style="background: #fafafa;">
 			<v-app-bar-nav-icon class="d-inline-flex d-sm-none" @click="drawer=true"></v-app-bar-nav-icon>
 			<v-btn text to="/">
-				<v-toolbar-title>{{$app.name}}</v-toolbar-title>
+				<v-toolbar-title>{{$config.name}}</v-toolbar-title>
 			</v-btn>
 			<v-spacer />
 			<v-btn icon>
@@ -59,7 +59,7 @@
 				</v-fade-transition>
 			</div>
 		</v-content>
-		<i-modal :open="$root.loading">
+		<i-modal :open="$root.loading" padding="36px">
 			<i-icon name="loading" loading size="36px" color="white" />
 		</i-modal>
 		<v-fab-transition>

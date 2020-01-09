@@ -15,6 +15,13 @@
 							<i-span copy>{{ssr.passwd}}</i-span>
 						</div>
 					</v-card-text>
+					<v-divider></v-divider>
+					<v-card-actions>
+						<v-spacer></v-spacer>
+						<v-btn @click="edit()" tile text color="primary">
+							<v-icon left small>mdi-pencil</v-icon>修改
+						</v-btn>
+					</v-card-actions>
 				</v-card>
 			</v-col>
 			<v-col cols="12" md="4" xl="3">
@@ -67,6 +74,18 @@
 				</v-card>
 			</v-col>
 		</v-row>
+		<i-form ref="form">
+			<template v-slot="{body}">
+				<v-flex align-end>
+					<v-text-field label="端口" v-model="body.port" type="number"></v-text-field>
+					<v-btn text tile @click="body.port=$utils.randN(1e4)+2e4">随机</v-btn>
+				</v-flex>
+				<v-flex align-end>
+					<v-text-field label="密码" v-model="body.passwd"></v-text-field>
+					<v-btn text tile @click="body.passwd=$utils.randomString(6)">随机</v-btn>
+				</v-flex>
+			</template>
+		</i-form>
 	</v-container>
 </template>
 <script>
@@ -113,6 +132,17 @@ export default {
 		},
 	},
 	methods: {
+		edit() {
+			let { node_id, port, passwd } = this.ssr
+			this.$refs.form.edit({ node_id, port, passwd }, async (body) => {
+				body.id = this.pa.id;
+				body.token = this.pa.token;
+				await this.$post('brook/setmyinfo', body)
+				for (let k in body) {
+					this.ssr[k] = body[k]
+				}
+			})
+		},
 		copy(str) {
 			utils.copy(str)
 		},
